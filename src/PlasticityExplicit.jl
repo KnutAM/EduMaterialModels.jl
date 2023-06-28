@@ -22,7 +22,7 @@ function explicit_response(return_state::Val, m::J2Plasticity, ϵ, old)
         # Evolution from the yield surface, goverened by dot(Φ) = 0
         dσdλ = - E4 ⊡ ν # dot(ϵp) = ν
         dκdλ = m.Hiso*(1 - old.κ/m.κ∞)
-        dβdλ = (3/2)*m.Hkin*(ν - (2/3)*old.β/m.β∞)
+        dβdλ = (2/3)*m.Hkin*(ν - (3/2)*old.β/m.β∞)
         
         # dΦdλ = dΦdσ dσdλ + dΦdβ dβdλ + dΦdκ dκdλ # Full derivative for all states
         dΦdλ = ν ⊡ (dσdλ - dβdλ) - dκdλ
