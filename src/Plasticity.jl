@@ -73,7 +73,7 @@ function residual(m::J2Plasticity, ϵ, old, Δt, x::SVector)
     RΦ = σ_vm - (m.Y0 + κ)
     Rϵp = (ϵp - old.ϵp) - Δλ*ν
     Rκ = (κ - old.κ) - Δλ*m.Hiso*(1 - κ/m.κ∞)
-    Rβ = (β - old.β) - Δλ*((3/2)*m.Hkin)*(ν - (2/3)*β/m.β∞)
+    Rβ = (β - old.β) - Δλ*((2/3)*m.Hkin)*(ν - (3/2)*β/m.β∞)
     return to_unknowns(m, RΦ, Rϵp, Rκ, Rβ)
 end
 
