@@ -1,9 +1,10 @@
-struct ExplicitWrapper{M<:AbstractMaterial} <: AbstractMaterial
+# Explicit time integration
+struct ExplicitPlasticity{M<:J2Plasticity} <: AbstractMaterial
     m::M
 end
-MMB.initial_material_state(m::ExplicitWrapper) = MMB.initial_material_state(m.m)
+MMB.initial_material_state(m::ExplicitPlasticity) = MMB.initial_material_state(m.m)
 
-function MMB.material_response(mw::ExplicitWrapper{<:J2Plasticity}, ϵ, old, Δt=nothing, cache=get_cache(mw), extras=NoExtraOutput(); options=Dict())
+function MMB.material_response(mw::ExplicitPlasticity, ϵ, old, Δt=nothing, cache=get_cache(mw), extras=NoExtraOutput(); options=Dict())
     dσdϵ = gradient(e -> explicit_response(Val(false), mw.m, e, old), ϵ)
     σ, new = explicit_response(Val(true), mw.m, ϵ, old)
     return σ, dσdϵ, new
@@ -34,6 +35,6 @@ function explicit_response(return_state::Val, m::J2Plasticity, ϵ, old)
         κ = old.κ + Δλ * dκdλ
         β = old.β + Δλ * dβdλ
         ϵp = old.ϵp + Δλ * ν
-        return σ, J2PlasticityState(ϵp, β, κ)
+        return σ, PlasticState(ϵp, β, κ)
     end
 end

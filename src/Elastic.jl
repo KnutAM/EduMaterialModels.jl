@@ -1,4 +1,14 @@
-struct LinearIsotropicElasticity{T}
+"""
+    LinearIsotropicElasticity(;kwargs...)
+
+Construct a linear, isotropic, elastic material. 
+The following pairs of properties can be given as keyword arguments:
+- `G, K`: Shear and bulk modulus 
+- `E, G`: Young's and shear modulus 
+- `E, ν`: Young's modulus and Poisson's ratio 
+- `E, K`: Young's and bulk modulus
+"""
+struct LinearIsotropicElasticity{T} <: AbstractMaterial
     G::T 
     K::T 
 end
@@ -23,3 +33,6 @@ end
 elastic_stress(m::LinearIsotropicElasticity, ϵ) = 2*m.G*dev(ϵ) + 3*m.K*vol(ϵ)
 elastic_stiffness(m::LinearIsotropicElasticity, args...) = gradient(x->elastic_stress(m, x), zero(SymmetricTensor{2,3}))
 
+function MaterialModelsBase.material_response(m::LinearIsotropicElasticity, ϵ, state, args...; kwargs...)
+    return elastic_stress(m, ϵ), elastic_stiffness(m), state 
+end

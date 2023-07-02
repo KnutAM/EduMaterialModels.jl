@@ -13,7 +13,17 @@ import MaterialModelsBase as MMB
     @test first(σ[2]-σ[1]) / first(ϵ[2]-ϵ[1]) ≈ E
 
     # Test Explicit implementation
-    mw = EMM.ExplicitWrapper(m)
+    mw = EMM.ExplicitPlasticity(m)
     σw = EMM.simulate_response(mw, stress_state, ϵ, t)
     @test all(isapprox.(σ, σw; atol=0.1)) # Explicit is bad ...
+
+    # Test Rate-dependent implementation 
+    m_rdep = EMM.J2ViscoPlasticity(;
+        e=m.e, Y0=m.Y0, Hiso=m.Hiso, κ∞=m.κ∞, Hkin=m.Hkin, β∞=m.β∞, # as above
+        tstar=1e-3, n=2.0)
+    σ_fast = EMM.simulate_response(m_rdep, stress_state, ϵ, t)
+    σ_slow = EMM.simulate_response(m_rdep, stress_state, ϵ, t*1e6)
+    @test all(isapprox.(σ, σ_slow; atol=1e-3))
+    @test all(s1[1] >= s2[1] for (s1, s2) in zip(σ_fast, σ_slow))
+    @test all(s1[1] >= s2[1] for (s1, s2) in zip(σ_slow, σ))
 end

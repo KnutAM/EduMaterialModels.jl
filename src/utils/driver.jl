@@ -1,3 +1,9 @@
+"""
+A simple driver to simulate a response for a given material, `m`, a
+`stress_state<:MaterialModelsBase.AbstractStressState`, a strain history 
+`strain_history::Vector{<:AbstractTensor}`, and time history, 
+`timevector::Vector{<:Number}`. 
+"""
 function simulate_response(m::AbstractMaterial, stress_state, strain_history, timevector)
     length(strain_history) == length(timevector)
     state = initial_material_state(m)
