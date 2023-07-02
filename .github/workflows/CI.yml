@@ -62,6 +62,7 @@ jobs:
             using Pkg
             packages = [
                 PackageSpec(;url="https://github.com/KnutAM/MaterialModelsBase.jl.git"),
+                PackageSpec(;url="https://github.com/KnutAM/Newton.jl.git"),
                 PackageSpec(path=pwd())
                 ]
             Pkg.develop(packages)
