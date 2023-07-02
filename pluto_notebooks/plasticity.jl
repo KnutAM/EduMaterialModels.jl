@@ -390,7 +390,9 @@ version = "2.2.4+0"
 
 [[deps.EduMaterialModels]]
 deps = ["ForwardDiff", "MaterialModelsBase", "Newton", "StaticArrays", "Tensors"]
-git-tree-sha1 = "2003a13852b84419b7e80b294fb1facbd948da80"
+git-tree-sha1 = "69db1c11f0b005ddf173012eeb086f600801e25a"
+repo-rev = "main"
+repo-url = "git@github.com:KnutAM/EduMaterialModels.jl.git"
 uuid = "dc10c695-e18c-49e2-887a-ef9f22cfa888"
 version = "0.1.0"
 
