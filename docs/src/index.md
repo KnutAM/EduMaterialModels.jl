@@ -11,5 +11,5 @@ and other [utility functions](@ref Utility-functions) for running simulations.
 However, the main purpose is to demonstrate the different material behaviors using 
 [`Pluto`](https://plutojl.org/) notebooks. The following notebooks are available:
 
-* [Rate-independent plasticity](pluto_notebooks/plasticity.html)
+* [Rate-independent plasticity](pluto_notebooks/plasticity)
 
