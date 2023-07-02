@@ -5,3 +5,4 @@
 /Manifest.toml
 /docs/build/
 /pluto_notebooks/pkg_build.log
+/pluto_notebooks/*.html

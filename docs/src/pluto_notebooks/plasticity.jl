@@ -59,12 +59,12 @@ end;
 # ╔═╡ 7dc5f83b-7a07-4741-9a2e-42e9246a8999
 begin
 	E_slider = @bind E Slider(50:50:450.; show_value=true, default=200.)
-	Y0_slider = @bind Y0 Slider(100.:20:400; show_value=true)
-	Hi_slider = @bind Hiso Slider(vcat(0, [2^n for n in 0:8]); show_value=true)
+	Y0_slider = @bind Y0 Slider(100.:50:500; show_value=true, default=250.)
+	Hi_slider = @bind Hiso Slider(vcat(0, [2^n for n in 0:8]); show_value=true, default=32)
 	κ∞_slider = @bind κ∞ Slider(vcat(50.:50:500, Inf); show_value=true, default=200.)
-	Hk_slider = @bind Hkin Slider(vcat(0, [2^n for n in 0:8]); show_value=true)
+	Hk_slider = @bind Hkin Slider(vcat(0, [2^n for n in 0:8]); show_value=true, default=32)
 	β∞_slider = @bind β∞ Slider(vcat(50.:50:500, Inf); show_value=true, default=200.)
-	N_slider = @bind num_steps Slider([2^n for n in 3:10]; show_value=true, default=100)
+	N_slider = @bind num_steps Slider([2^n for n in 3:10]; show_value=true, default=64)
 	method_cb = @bind method CheckBox()
 	md"""
 	# Plasticity modeling
@@ -73,19 +73,44 @@ begin
 	2. How do the time discretization and time integration affect the material response, i.e. the number of time steps and explicit versus implicit algorithms. 
 
 	## Model theory
-	The plasticity model investigated in this notebook assumes linear elasticity via the additive decomposition, ``\boldsymbol{\epsilon} = \boldsymbol{\epsilon}_\mathrm{p} + \boldsymbol{\epsilon}_\mathrm{e}``, where the elastic strains, ``\boldsymbol{\epsilon}_\mathrm{e}`` are giving the stress. The yield criterion is based on the von Mises effective stress, and a so-called associative evolution law for the plastic strains is used. The hardening is governed by the Voce (isotropic) and the Armstrong-Frederick (kinematic) laws, and the KKT-conditions are used to obtain a rate-independent response. The complete set of time-continuous equations for this material is given below.
-	```math
-	\begin{aligned}
-	\boldsymbol{\sigma} &= \mathsf{E}:[\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\mathrm{p}] \\
-	\varPhi &= f_\mathrm{vM}(\boldsymbol{\sigma}-\boldsymbol{\beta}) - [Y_0 + \kappa] , \quad
-	f_\mathrm{vM}(\boldsymbol{x}) = \sqrt{\frac{3}{2}\boldsymbol{x}^\mathrm{dev}:\boldsymbol{x}^\mathrm{dev}} \\
-	\dot{\boldsymbol{\epsilon}}_\mathrm{p} &= \dot{\lambda} \boldsymbol{\nu}, \quad \boldsymbol{\nu} = \frac{\partial \varPhi}{\partial \boldsymbol{\sigma}}=\frac{3}{2} \frac{\boldsymbol{\sigma}^\mathrm{dev}-\boldsymbol{\beta}^\mathrm{dev}}{f_\mathrm{vM}(\boldsymbol{\sigma}-\boldsymbol{\beta})}\\
-	\dot{\kappa} &= H_\mathrm{iso} \dot{\lambda} \left[1 - \frac{\kappa}{\kappa_\infty}\right] \\
-	\dot{\boldsymbol{\beta}} &= H_\mathrm{kin} \dot{\lambda} \frac{2}{3} \left[\boldsymbol{\nu} - \frac{3}{2}\frac{\boldsymbol{\beta}}{\kappa_\infty}\right] \\
-	\varPhi &\leq 0, \quad \dot{\lambda} \geq 0, \quad \varPhi \dot{\lambda} = 0
-	\end{aligned}
-	```
-	where the elastic stiffness is assumed isotropic with ``\mathsf{E}=2G \mathsf{I}^\mathrm{dev} + 3K \boldsymbol{I}\otimes\boldsymbol{I}`` (with Young's modulus, ``E=9KG/(3K+G)``). The material parameters are the elastic shear and bulk moduli, ``G`` and ``K``, the initial yield limit, ``Y_0``, the isotropic and kinematic hardening modulii, ``H_\mathrm{iso}`` and ``H_\mathrm{kin}``, and the isotropic and kinematic hardening saturation stresses, ``\kappa_\infty`` and ``\beta_\infty``. 
+	The plasticity model investigated in this notebook assumes linear elasticity via the additive decomposition, ``\boldsymbol{\epsilon} = \boldsymbol{\epsilon}_\mathrm{p} + \boldsymbol{\epsilon}_\mathrm{e}``, where the elastic strains, ``\boldsymbol{\epsilon}_\mathrm{e}`` are giving the stress.
+	
+	``
+	\boldsymbol{\sigma} = \mathsf{E}:[\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\mathrm{p}], \quad \mathsf{E}=2G \mathsf{I}^\mathrm{dev} + 3K \boldsymbol{I}\otimes\boldsymbol{I}
+	``
+	
+	where the elastic stiffness is assumed isotropic and is given by the shear and bulk moduli, ``G`` and ``K``. Young's modulus is given as ``E=9KG/(3K+G)``. 
+	
+	The yield criterion is based on the von Mises effective stress, 
+	
+	``
+	\varPhi = f_\mathrm{vM}(\boldsymbol{\sigma}-\boldsymbol{\beta}) - [Y_0 + \kappa] , \quad
+	f_\mathrm{vM}(\boldsymbol{x}) = \sqrt{\frac{3}{2}\boldsymbol{x}^\mathrm{dev}:\boldsymbol{x}^\mathrm{dev}}
+	``
+	
+	where ``Y_0`` is the initial yield limit. The evolution law for the plastic strains is 
+	
+	``
+	\dot{\boldsymbol{\epsilon}}_\mathrm{p} = \dot{\lambda} \boldsymbol{\nu}, \quad \boldsymbol{\nu} = \frac{\partial \varPhi}{\partial \boldsymbol{\sigma}}=\frac{3}{2} \frac{\boldsymbol{\sigma}^\mathrm{dev}-\boldsymbol{\beta}^\mathrm{dev}}{f_\mathrm{vM}(\boldsymbol{\sigma}-\boldsymbol{\beta})}
+	``
+	
+	The hardening is governed by the Voce (isotropic) 
+	
+	``
+	\dot{\kappa} = H_\mathrm{iso} \dot{\lambda} \left[1 - \frac{\kappa}{\kappa_\infty}\right]
+	``
+
+	and the Armstrong-Frederick (kinematic),
+	
+	``
+	\dot{\boldsymbol{\beta}} = H_\mathrm{kin} \dot{\lambda} \frac{2}{3} \left[\boldsymbol{\nu} - \frac{3}{2}\frac{\boldsymbol{\beta}}{\kappa_\infty}\right]
+	``
+
+	laws, with isotropic and kinematic hardening modulii, ``H_\mathrm{iso}`` and ``H_\mathrm{kin}``, and isotropic and kinematic hardening saturation stresses, ``\kappa_\infty`` and ``\beta_\infty``. Finally, the KKT-conditions are used to obtain a rate-independent response,
+	
+	``
+	\varPhi \leq 0, \quad \dot{\lambda} \geq 0, \quad \varPhi \dot{\lambda} = 0
+	``´
 	
 	## Simulation parameters
 	This notebook simulates the uniaxial stress response for ``\epsilon_{11}=\pm 1 \%`` during one cycle. You can adjust the material parameters, ``E``, ``Y_0``, ``H_\mathrm{iso}``, ``\kappa_\infty``, ``H_\mathrm{kin}``, and ``\beta_\infty``. In addition, you can choose how many steps are taken for each quarter cycle, as well as if explicit (Forward Euler) time integration should be used instead of implicit (Backward Euler). 

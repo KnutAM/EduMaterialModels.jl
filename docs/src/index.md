@@ -4,11 +4,12 @@ CurrentModule = EduMaterialModels
 
 # EduMaterialModels
 
-Documentation for [EduMaterialModels](https://github.com/KnutAM/EduMaterialModels.jl).
+This package contains basic material models for educational purposes following the [`MaterialModelsBase`](https://github.com/KnutAM/MaterialModelsBase.jl) interface. 
 
-```@index
-```
+Short doc-strings are available for each [material model](@ref Material-models), 
+and other [utility functions](@ref Utility-functions) for running simulations. 
+However, the main purpose is to demonstrate the different material behaviors using 
+[`Pluto`](https://plutojl.org/) notebooks. The following notebooks are available:
 
-```@autodocs
-Modules = [EduMaterialModels]
-```
+* [Rate-independent plasticity](pluto_notebooks/plasticity.html)
+

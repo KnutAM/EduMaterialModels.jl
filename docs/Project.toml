@@ -1,3 +1,4 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 EduMaterialModels = "dc10c695-e18c-49e2-887a-ef9f22cfa888"
+PlutoStaticHTML = "359b1769-a58e-495b-9770-312e911026ad"
