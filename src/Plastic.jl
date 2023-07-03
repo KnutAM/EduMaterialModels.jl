@@ -100,7 +100,7 @@ end
 
 # Rate dependent response 
 """
-    J2ViscoPlasticity(;e, Y0, Hiso, κ∞, Hkin, β∞)
+    J2ViscoPlasticity(;e, Y0, Hiso, κ∞, Hkin, β∞, n, tstar)
 
 The `J2ViscoPlasticity` material model assumes linear elasticity combined 
 with rate dependent (Norton-type) von mises plasticity. Nonlinear isotropic (Voce)

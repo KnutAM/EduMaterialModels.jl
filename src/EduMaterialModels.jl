@@ -3,6 +3,8 @@ using Newton, Tensors, StaticArrays, ForwardDiff
 using MaterialModelsBase
 import MaterialModelsBase as MMB
 
+import Base: @kwdef # Make compatible with julia 1.8
+
 include("utils/svoigt.jl")    # Conversion to static voigt/mandel #Tensors.jl#194
 include("utils/utils.jl")     # Useful general functions 
 include("utils/driver.jl")    # Simple driver to simulate a strain history
