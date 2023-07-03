@@ -1,5 +1,5 @@
 using EduMaterialModels
-using PlutoStaticHTML
+using PlutoSliderServer
 using Documenter
 
 DocMeta.setdocmeta!(EduMaterialModels, :DocTestSetup, :(using EduMaterialModels); recursive=true)
@@ -7,19 +7,17 @@ DocMeta.setdocmeta!(EduMaterialModels, :DocTestSetup, :(using EduMaterialModels)
 const is_CI = get(ENV, "CI", "false") == "true"
 
 const nb_dir = joinpath(@__DIR__, "src", "pluto_notebooks")
-notebooks = [file[1:end-3] for file in readdir(nb_dir) if endswith(file, ".jl")]
-nb_md(nb) = joinpath("pluto_notebooks", nb*".md")
 
-for nb in notebooks
-    try
-        build_notebooks(BuildOptions(nb_dir; output_format=documenter_output), [nb*".jl"])
-    catch e
-        @info "building notebook failed with error $e"
-        @info "Outputting an empty markdown file"
-        open(nb_md(nb), "w") do md
-            println(md, "notebook is missing")
-        end
-    end
+notebooks = [
+    "Plasticity" => "pluto_notebooks/plasticity_md.md",
+    "Viscoplasticity" => "pluto_notebooks/viscoplasticity_md.md",
+    "Viscoelasticity" => "pluto_notebooks/viscoelasticity_md.md"
+]
+if Sys.iswindows()
+    @warn("Cannot create html notebooks on windows")
+else
+    # Create static html versions
+    PlutoSliderServer.export_directory(nb_dir; Export_create_index=false)
 end
 
 makedocs(;
@@ -35,7 +33,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Notebooks" => [uppercasefirst(nb) => nb_md(nb) for nb in notebooks],
+        "Notebooks" => notebooks,
         "Material Models" => "models.md",
         "Utility functions" => "utils.md",
     ],

@@ -2,4 +2,4 @@
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 EduMaterialModels = "dc10c695-e18c-49e2-887a-ef9f22cfa888"
 Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
-PlutoStaticHTML = "359b1769-a58e-495b-9770-312e911026ad"
+PlutoSliderServer = "2fc8631c-6f24-4c5b-bca7-cbb509c42db4"

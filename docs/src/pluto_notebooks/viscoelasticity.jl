@@ -36,9 +36,6 @@ begin
 	close(io_log)
 end;
 
-# ╔═╡ 4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
-md"**Note:** If you are viewing this as a static html-page and want to change parameters: you must either open the notebook in [binder](https://binder.plutojl.org/v0.19.12/open?url=https%253A%252F%252Fknutam.github.io%252FEduMaterialModels.jl%252Fdev%252Fpluto_notebooks%252Fviscoelasticity.jl) (very long loading time) or [download the file](https://knutam.github.io/EduMaterialModels.jl/dev/pluto_notebooks/viscoelasticity.jl) and open it using [Pluto.jl](https://plutojl.org/)."
-
 # ╔═╡ 2a7ab774-12b0-4a75-8266-891d8411c1f2
 function plot_response(;t_ramp=1.0, E1=30e3, E2=1e3, η=1e-3, ϵ=0.001, num_steps=100)
 	t_total=5.0
@@ -128,7 +125,6 @@ end
 plot_response(;E1=E1*1e3, E2=E2*1e3, η=η*1000, t_ramp, num_steps)
 
 # ╔═╡ Cell order:
-# ╟─4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
 # ╟─48db4cd0-15f0-11ee-0796-d3fffb0d18a2
 # ╟─2a7ab774-12b0-4a75-8266-891d8411c1f2
 # ╟─7dc5f83b-7a07-4741-9a2e-42e9246a8999
