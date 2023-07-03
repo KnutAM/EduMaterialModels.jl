@@ -10,9 +10,19 @@ const nb_dir = joinpath(@__DIR__, "src", "pluto_notebooks")
 notebooks = [file[1:end-3] for file in readdir(nb_dir) if endswith(file, ".jl")]
 nb_md(nb) = joinpath("pluto_notebooks", nb*".md")
 
-build_notebooks(BuildOptions(nb_dir; output_format=documenter_output))
+for nb in notebooks
+    try
+        build_notebooks(BuildOptions(nb_dir; output_format=documenter_output), [nb*".jl"])
+    catch e
+        @info "building notebook failed with error $e"
+        @info "Outputting an empty markdown file"
+        open(nb_md(nb), "w") do md
+            println(md, "notebook is missing")
+        end
+    end
+end
 
-makedocs(;debug=true,
+makedocs(;
     modules=[EduMaterialModels],
     authors="Knut Andreas Meyer and contributors",
     repo="https://github.com/KnutAM/EduMaterialModels.jl/blob/{commit}{path}#{line}",
