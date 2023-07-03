@@ -36,6 +36,9 @@ begin
 	close(io_log)
 end;
 
+# ╔═╡ 4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
+md"**Note:** If you are viewing this as a static html-page and want to change parameters: you must either open the notebook in [binder](https://binder.plutojl.org/v0.19.12/open?url=https%253A%252F%252Fknutam.github.io%252FEduMaterialModels.jl%252Fdev%252Fpluto_notebooks%252Fplasticity.jl) (very long loading time) or [download the file](https://knutam.github.io/EduMaterialModels.jl/dev/pluto_notebooks/plasticity.jl) and open it using [Pluto.jl](https://plutojl.org/)."
+
 # ╔═╡ 2a7ab774-12b0-4a75-8266-891d8411c1f2
 function plot_response(;Δϵ=0.01, num_steps=100, E=200.e3, Y0=200.0, Hiso=10e3, κ∞=100.0, Hkin=30.e3, β∞=100.0, use_explicit=false)
 	tf(x) = SymmetricTensor{2,1}(tuple(x))
@@ -134,6 +137,7 @@ end
 plot_response(;E=E*1e3, Y0=Y0, Hiso=1e3*Hiso, κ∞=κ∞, Hkin=1e3*Hkin, β∞=β∞, num_steps=num_steps, use_explicit=method)
 
 # ╔═╡ Cell order:
+# ╟─4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
 # ╟─48db4cd0-15f0-11ee-0796-d3fffb0d18a2
 # ╟─2a7ab774-12b0-4a75-8266-891d8411c1f2
 # ╟─7dc5f83b-7a07-4741-9a2e-42e9246a8999
