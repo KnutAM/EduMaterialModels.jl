@@ -37,7 +37,32 @@ begin
 end;
 
 # ╔═╡ 4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
-md"**Note:** If you are viewing this as a static html-page and want to change parameters: you must either open the notebook in [binder](https://binder.plutojl.org/v0.19.12/open?url=https%253A%252F%252Fknutam.github.io%252FEduMaterialModels.jl%252Fdev%252Fpluto_notebooks%252Fviscoplasticity.jl) (very long loading time) or [download the file](https://knutam.github.io/EduMaterialModels.jl/dev/pluto_notebooks/viscoplasticity.jl) and open it using [Pluto.jl](https://plutojl.org/)."
+md"**Note:** If you are viewing this as a static html-page and want to change parameters: you must either open the notebook in [binder](https://binder.plutojl.org/v0.19.12/open?url=https%253A%252F%252Fknutam.github.io%252FEduMaterialModels.jl%252Fdev%252Fpluto_notebooks%252Fviscoelasticity.jl) (very long loading time) or [download the file](https://knutam.github.io/EduMaterialModels.jl/dev/pluto_notebooks/viscoelasticity.jl) and open it using [Pluto.jl](https://plutojl.org/)."
+
+# ╔═╡ 2a7ab774-12b0-4a75-8266-891d8411c1f2
+function plot_response(;t_ramp=1.0, t_hold=10.0, E1=10e3, E2=20e3, η=1e3, ϵ=0.001, num_steps=100)
+	tf(x) = SymmetricTensor{2,1}(tuple(x))
+	ϵ_a = [tf(x) for x in range(0,ϵ,num_steps)]
+	ϵ_b = [tf(ϵ) for _ in 2:num_steps]
+	ϵ_vec = vcat(ϵ_a, ϵ_b)
+	t = vcat(collect(range(0, t_ramp, num_steps)), range(t_ramp, t_ramp+t_hold, num_steps)[2:end])
+	
+	m = EduMaterialModels.Zener1D(;E1, E2, η)
+	stress_state = UniaxialStress()
+	σ = EduMaterialModels.simulate_response(m, stress_state, ϵ_vec, t)
+	fig = CM.Figure()
+	ax = CM.Axis(fig[1,1]; xlabel="ϵ₁₁ [%]", ylabel="σ₁₁ [MPa]")
+	CM.lines!(ax, 100*first.(ϵ_vec), first.(σ))
+	CM.xlims!(ax, 0, 100*ϵ)
+	CM.ylims!(ax, 0, 1000)
+
+	ax = CM.Axis(fig[1,1]; xlabel="t [s]", ylabel="σ₁₁ [MPa]")
+	CM.lines!(ax, t, first.(σ))
+	CM.xlims!(ax, 0, maximum(t))
+	CM.ylims!(ax, 0, 1000)
+	
+	return fig
+end;
 
 # ╔═╡ 7dc5f83b-7a07-4741-9a2e-42e9246a8999
 begin
@@ -89,33 +114,8 @@ begin
 	"""
 end
 
-# ╔═╡ 2a7ab774-12b0-4a75-8266-891d8411c1f2
-function plot_response(;Δϵ=0.01, num_steps=100, E=200.e3, Y0=200.0, Hiso=10e3, κ∞=100.0, Hkin=30.e3, β∞=100.0, tstar=tstar, n=n, cycle_time=cycle_time)
-	tf(x) = SymmetricTensor{2,1}(tuple(x))
-	ϵ_a = [tf(x) for x in range(0,Δϵ,num_steps)]
-	ϵ_b = [tf(x) for x in range(Δϵ, -Δϵ, 2*num_steps)[2:end]]
-	ϵ_c = [tf(x) for x in range(-Δϵ,0,num_steps)[2:end]]
-	ϵ = append!(ϵ_a, ϵ_b, ϵ_c)
-	m = EduMaterialModels.J2Plasticity(;
-		e=EduMaterialModels.LinearIsotropicElasticity(;E=E, ν=0.3), 
-		Y0=Y0, Hiso=Hiso, κ∞=κ∞, Hkin=Hkin, β∞=β∞)
-	mv = EduMaterialModels.J2ViscoPlasticity(;e=m.e, Y0, Hiso, κ∞, Hkin, β∞, n, tstar)
-	stress_state = UniaxialStress()
-	t = collect(range(0,cycle_time,length(ϵ)))
-	σ = EduMaterialModels.simulate_response(m, stress_state, ϵ, t)
-	σv = EduMaterialModels.simulate_response(mv, stress_state, ϵ, t)
-	fig = CM.Figure()
-	ax = CM.Axis(fig[1,1]; xlabel="ϵ₁₁ [%]", ylabel="σ₁₁ [MPa]")
-	CM.lines!(ax, 100*first.(ϵ), first.(σ); label="Plastic")
-	CM.lines!(ax, 100*first.(ϵ), first.(σv); label="Visco-plastic")
-	CM.xlims!(ax, -100*Δϵ, 100*Δϵ)
-	CM.ylims!(ax, -1000, 1000)
-	CM.axislegend(ax; position=:lt)
-	return fig
-end;
-
 # ╔═╡ c5d0dd04-241e-48a8-944d-dfa61edeface
-plot_response(;E=E*1e3, Y0=Y0, Hiso=1e3*Hiso, κ∞=κ∞, Hkin=1e3*Hkin, β∞=β∞, tstar=tstar, n=n, cycle_time=cycle_time, num_steps=num_steps)
+plot_response()
 
 # ╔═╡ Cell order:
 # ╟─4b6d68c1-2b9f-45fc-bfda-a525cdf8679f

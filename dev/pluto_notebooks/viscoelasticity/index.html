@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Viscoelasticity · EduMaterialModels.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://KnutAM.github.io/EduMaterialModels.jl/pluto_notebooks/viscoelasticity/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">EduMaterialModels.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Notebooks</span><ul><li><a class="tocitem" href="../plasticity/">Plasticity</a></li><li class="is-active"><a class="tocitem" href>Viscoelasticity</a></li><li><a class="tocitem" href="../viscoplasticity/">Viscoplasticity</a></li></ul></li><li><a class="tocitem" href="../../models/">Material Models</a></li><li><a class="tocitem" href="../../utils/">Utility functions</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Notebooks</a></li><li class="is-active"><a href>Viscoelasticity</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Viscoelasticity</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/KnutAM/EduMaterialModels.jl/blob/main/docs/src/pluto_notebooks/viscoelasticity.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><style>
+    table {
+        display: table !important;
+        margin: 2rem auto !important;
+        border-top: 2pt solid rgba(0,0,0,0.2);
+        border-bottom: 2pt solid rgba(0,0,0,0.2);
+    }
+
+    pre, div {
+        margin-top: 1.4rem !important;
+        margin-bottom: 1.4rem !important;
+    }
+
+    .code-output {
+        padding: 0.7rem 0.5rem !important;
+    }
+
+    .admonition-body {
+        padding: 0em 1.25em !important;
+    }
+</style>
+
+<!-- PlutoStaticHTML.Begin -->
+<!--
+    # This information is used for caching.
+    [PlutoStaticHTML.State]
+    input_sha = "83046b9e691c1c6aa8eb8e3610357df81dec779f029aea94f24d83769840e7b8"
+    julia_version = "1.9.1"
+-->
+
+<div class="markdown"><p><strong>Note:</strong> If you are viewing this as a static html-page and want to change parameters: you must either open the notebook in <a href="https://binder.plutojl.org/v0.19.12/open?url=https%253A%252F%252Fknutam.github.io%252FEduMaterialModels.jl%252Fdev%252Fpluto_notebooks%252Fviscoelasticity.jl">binder</a> (very long loading time) or <a href="https://knutam.github.io/EduMaterialModels.jl/dev/pluto_notebooks/viscoelasticity.jl">download the file</a> and open it using <a href="https://plutojl.org/">Pluto.jl</a>.</p></div>
+
+
+
+
+<pre class='language-julia'><code class='language-julia'>function plot_response(;t_ramp=1.0, t_hold=10.0, E1=10e3, E2=20e3, η=1e3, ϵ=0.001, num_steps=100)
+    tf(x) = SymmetricTensor{2,1}(tuple(x))
+    ϵ_a = [tf(x) for x in range(0,ϵ,num_steps)]
+    ϵ_b = [tf(ϵ) for _ in 2:num_steps]
+    ϵ_vec = vcat(ϵ_a, ϵ_b)
+    t = vcat(collect(range(0, t_ramp, num_steps)), range(t_ramp, t_ramp+t_hold, num_steps)[2:end])
+    
+    m = EduMaterialModels.Zener1D(;E1, E2, η)
+    stress_state = UniaxialStress()
+    σ = EduMaterialModels.simulate_response(m, stress_state, ϵ_vec, t)
+    fig = CM.Figure()
+    ax = CM.Axis(fig[1,1]; xlabel="ϵ₁₁ [%]", ylabel="σ₁₁ [MPa]")
+    CM.lines!(ax, 100*first.(ϵ_vec), first.(σ))
+    CM.xlims!(ax, 0, 100*ϵ)
+    CM.ylims!(ax, 0, 1000)
+
+    ax = CM.Axis(fig[1,1]; xlabel="t [s]", ylabel="σ₁₁ [MPa]")
+    CM.lines!(ax, t, first.(σ))
+    CM.xlims!(ax, 0, maximum(t))
+    CM.ylims!(ax, 0, 1000)
+    
+    return fig
+end;</code></pre>
+
+
+
+<div class="markdown"><h1>Visco-plasticity modeling</h1><h2>Intended learning outcomes</h2><ol><li><p>Understand how a visco-plastic model differs from a rate-independent plasticity model</p></li></ol><h2>Model theory</h2><p>The main difference between a rate-independent plasticity model and a visco-plastic material model, is that we no longer have the KKT-conditions. In particular, we allow stress-states outside the yield surface, i.e. <span class="tex">$\varPhi&gt;0$</span>. The plastic multiplier is then typically given on a form like</p><p><span class="tex">$\dot{\lambda} = \frac{1}{t^*} \eta(\varPhi), \quad \eta(x) \geq 0$</span></p><p>The function <span class="tex">$\eta$</span> is called the over-stress function, and there exist different versions in the literature. In this document, we will use one of versions that are denoted Norton overstress functions,</p><p><span class="tex">$\eta(\varPhi) = \left[ \frac{\langle \varPhi \rangle}{Y_0}\right]^n, \quad \langle x \rangle = \mathrm{max}(0, x)$</span></p><p>Where Y_0 is the initial yield limit. The viscous parts then introduce two new parameters, the characteristic time, <span class="tex">$t^*$</span>, and the exponent, <span class="tex">$n$</span>. Otherwise, the parameters and equations are the same as for the rate-independent material model. </p><h2>Simulation parameters</h2><p>This notebook simulates the uniaxial stress response for <span class="tex">$\epsilon_{11}=\pm 1 \%$</span> during one cycle. You can adjust the material parameters, <span class="tex">$E$</span>, <span class="tex">$Y_0$</span>, <span class="tex">$H_\mathrm{iso}$</span>, <span class="tex">$\kappa_\infty$</span>, <span class="tex">$H_\mathrm{kin}$</span>, <span class="tex">$\beta_\infty$</span>, <span class="tex">$t^*$</span>, and <span class="tex">$n$</span>. In addition, you can choose how many steps are taken for each quarter cycle, as well as the total time for one cycle. </p><table><tbody><tr><th align="right">param</th><th align="right">value</th><th align="right">unit</th></tr><tr><td align="right">E</td><td align="right"><bond def="E" unique_id="mDMR+4y2QXkW"><input max="9" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["50.0", "100.0", "150.0", "200.0", "250.0", "300.0", "350.0", "400.0", "450.0"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">200.0</output></bond></td><td align="right">GPa</td></tr><tr><td align="right">Y0</td><td align="right"><bond def="Y0" unique_id="UYGEdd/Uj4kt"><input max="9" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["100.0", "150.0", "200.0", "250.0", "300.0", "350.0", "400.0", "450.0", "500.0"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">250.0</output></bond></td><td align="right">MPa</td></tr><tr><td align="right">Hiso</td><td align="right"><bond def="Hiso" unique_id="hl8OdpkjUpPc"><input max="10" min="1" type="range" value="7"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["0", "1", "2", "4", "8", "16", "32", "64", "128", "256"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">32</output></bond></td><td align="right">GPa</td></tr><tr><td align="right">κ∞</td><td align="right"><bond def="κ∞" unique_id="bu7piW+nb1Tz"><input max="11" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["50.0", "100.0", "150.0", "200.0", "250.0", "300.0", "350.0", "400.0", "450.0", "500.0", "Inf"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">200.0</output></bond></td><td align="right">MPa</td></tr><tr><td align="right">Hkin</td><td align="right"><bond def="Hkin" unique_id="RU2swXabmSqA"><input max="10" min="1" type="range" value="7"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["0", "1", "2", "4", "8", "16", "32", "64", "128", "256"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">32</output></bond></td><td align="right">GPa</td></tr><tr><td align="right">β∞</td><td align="right"><bond def="β∞" unique_id="YSbaBSIidfDp"><input max="11" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["50.0", "100.0", "150.0", "200.0", "250.0", "300.0", "350.0", "400.0", "450.0", "500.0", "Inf"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">200.0</output></bond></td><td align="right">MPa</td></tr><tr><td align="right">t*</td><td align="right"><bond def="tstar" unique_id="VdPKNwMQ7ZLe"><input max="9" min="1" type="range" value="3"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["0.25", "0.5", "1.0", "2.0", "4.0", "8.0", "16.0", "32.0", "64.0"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">1.0</output></bond></td><td align="right">s</td></tr><tr><td align="right">n</td><td align="right"><bond def="n" unique_id="i87f+HCjbTz/"><input max="13" min="1" type="range" value="1"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["1.0", "1.25", "1.5", "1.75", "2.0", "2.25", "2.5", "2.75", "3.0", "3.25", "3.5", "3.75", "4.0"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">1.0</output></bond></td><td align="right">-</td></tr><tr><td align="right">cycle time</td><td align="right"><bond def="cycle_time" unique_id="vT9LCb7dd9YM"><input max="12" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["0.5", "1.0", "2.0", "4.0", "8.0", "16.0", "32.0", "64.0", "128.0", "256.0", "512.0", "1024.0"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">4.0</output></bond></td><td align="right">s</td></tr><tr><td align="right">steps</td><td align="right"><bond def="num_steps" unique_id="iJZx1CIxkRPs"><input max="8" min="1" type="range" value="4"/><script>
+					const input_el = currentScript.previousElementSibling
+					const output_el = currentScript.nextElementSibling
+					const displays = ["8", "16", "32", "64", "128", "256", "512", "1024"]
+					
+					input_el.addEventListener("input", () => {
+						output_el.value = displays[input_el.valueAsNumber - 1]
+					})
+					</script><output style="
+						font-family: system-ui;
+    					font-size: 15px;
+    					margin-left: 3px;
+    					transform: translateY(-4px);
+    					display: inline-block;">64</output></bond></td><td align="right">-</td></tr></tbody></table></div>
+
+
+<img src="data:image/png;base64,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T5+4XQEAtGPFB9b69evnzp37L//yL2vWrHnrrbcGDx48ffr0u++++6yzzgrcHwBAu1P8fbDKy8vvvffeDRs2HDx48Jvf/GZFRcXcuXM/85nPDB069O677967d2/RK+/fv3/N/++4i71efvnlOXPmrF279sTnNnEIAKB1ZAIvkzp48ODcuXOfeuqpjRs3ppSGDh36/vvvF7HOHXfc8fDDDzceOffcczds2JBSqqurGzFixLZt2/Ljl1566bJly/L/buJQEyZMmPB67f7s5reL2CfQJg4fPrx3796zzz77FK2/b9++lJLLHiDWhx9+OHjw4Ewm09YbKcZll12WUmpOVxRE3sm9oqJi9uzZL7300vXXX5/JZDZt2lTcOuvWrSstLf3bRu6///78ocmTJ2/fvn3+/PlHjx696aabli9ffu+99/7WQwAArSnsDNb27du/+c1vPvvss9u2bSspKRk5cuQtt9wya9asIpY699xz6+rqCueiCo4cOdK9e/exY8e+8cYb+ZG+ffuWl5dv3bq1iUNNfy1nsKDdcQYL2iNnsE7O3r17//qv/7qqqqp///7z5s3r3bv3Aw88cOjQoXXr1hVXVyml7du3Dx48+Fvf+tY111zzjW98Y/fu3fnxFStWZLPZqVOnFmaOGTPm448/bvoQAEAra9Gd3B988MEPPvggpTRs2LCvf/3rX/nKVyoqKlq+p/37969atWr16tVdu3b98Y9//K1vfesnP/nJlClT3n333ZTS8OHDCzMHDRqUzWbr6+ubOFReXt7yLQEANF/xgfV3f/d3+T/2PGzYsG7duj3zzDPPPPPMcXPWrVt3ssvu3bu3rKzsvPPOe+ONN7p27bp06dJJkyZde+21hQ8N+/XrV5hcWVmZUtq0aVMTh0aOHFkYnDhx4i9/+cvGX653796pz5DXXnvtZPcJtJUjR47s37//jDPOOEXr79+/P6XUs2fPU7Q+dE7bt2/fsmVLO/2IsK6urnfv3if1lOIDa+DAgTt27EgpffTRR0UvcqLKysrDhw8XHl5++eXTp0//13/91/fff7+qqiql1PiDv/ynh0OGDGniUOPFX3nlleO+XP4arPHjxwe+BOCUcg0WtEft+hqsk62r1JLAWrFiRdHPPSmjRo1KKW3cuDF/Lip/D4i82trakpKSioqKJg61ziYBAAoib9MQ4u///u9LS0t/8IMfFEZqampSSldcccX48ePLysqee+65wqHVq1cPHDgwpdTEIQCAVlZ8YA0dOvTKK69szsy+ffted911zVx25syZmUxm5syZjz766NatW2fPnv3888+PHz++a9euJSUlkyZNWrVq1bx58+rr62fMmFFXV5f/XcUmDgEAtLLi74M1dOjQXC43bdq03zpz/vz5f/Inf/LDH/6wmSsvWLDgxhtvLFyJNXr06FdeeSX/8eexY8cuvvji9evX5w9VV1cvWLAg/+8mDjXBfbCg3XENFrRH7foarCLug1X8NVglJSWbNm169NFHmzO5tLS0+Stfe+2111xzzX/+539+/PHHV111VePfDSwrK1u3bl1tbe3SpUunTJnS+KKzJg4BALSm4gOruL8z2ExlZWVXXXXVpx0dNGjQtddee7KHAABax2l3kXtbaJenKwGA05bAAgAIJrAAAIIJLACAYKcwsC655JJTtzgAwGnrFAbWypUrT93iAACnreJv03CckhKfNgIApBQYWLlc7umnn248Ul1dHbU4AEA7EhZYmUxm+vTpjUe++MUvRi0OANCOhH2ul81mjxv55JNPohYHAGhHXDgFABDMbRoAAIK5TQMAQDC3aQAACOY2DQAAwdymAQAgmNs0AAAEa2lgrV+/vqqqavfu3SG7AQDoAFr6EeHAgQO3bNmyaNGiysrK+fPnv//++127dj3vvPMeeuihqqqqkC0CALQvLQ2sysrK7t2733777QcPHiwpKenZs+fRo0fXrl377LPPfve7373ppptCdgkA0I4EXIM1dOjQgwcPTp8+/dChQ/v27Tt48OA777xzxhlnzJw588QLswAAOryAwOrVq1ffvn2ffvrprl275kdGjhz57LPPHj16dNmyZS1fHwCgfQkIrIaGhm7duh03mL8Aa9euXS1fHwCgfQkIrAkTJmzbtm3hwoWNB6+//vqU0uTJk1u+/qmWaesNAAAdTEBgzZ07t7Kysrq6uqqq6vLLL7/kkkt69uz56quv3nDDDRUVFS1fHwCgfQkIrK5du3744YdXX331gQMHVqxY8fbbb1dWVn7nO9958sknW744AEC7E/Oncnr27Plv//ZvIUsBALR3YX8qBwCAPIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBBYAQDCBBQAQTGABAAQTWAAAwQQWAEAwgQUAEExgAQAEE1gpZdp6AwBAxyKwAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjASinX1hsAADoWgQUAEExgAQAEE1gAAMEEFgBAMIEFABBMYAEABBNYAADBBFZKmbbeAADQsQgsAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMBKmbbeAADQwQgsAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAA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RYA2sXr16sKv7JWUlMyaNevEb3+fpjnfFn7rzJZsADqhE3PktPrZ2vxvCwXNf0WZXC7XghNsp7W6urpf/epX559/fhN/KSw/Z/DgwVu2bPmNM5uzCNBqstnsxo0bP/nkk5EjR/bo0eNkn978d/SnzWzhBoB0mv1sDdnMiYt05MACAGgTHfAidwCAtiWwAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIFhZW28A4HTxhS98oaGhIaX09NNPn/gwpfSd73xn2bJlKaUvfelLEyZMyA9+8MEHmzdvvuyyy5qYA3Q2zmABncvDDz/87W9/+zceWrhwYS6Xu+CCC37jw8WLFz/00EM/+9nPfvSjH23cuLHwrL/4i7/YunVr4eHgwYMvuOCCZ5555oMPPjhlLwI43QksoHNZuXLl66+//mlHr7766tmzZ5/4cM2aNdOnT7/99tufeuqplNIzzzyTn/DSSy/t2bPnmmuuKTzlj//4j2fPnp3JZE7VCwDaAx8RAh3NunXrFi9eXFtbO2bMmC984QuN/4Dr888//+tf/7q+vv7JJ5+87rrrunbt+mmLNDQ05HK5p556auXKlZdffvnbb7/9+c9//o477kgpZTKZlStXppRyudxXv/rVf/iHf5BTwHGcwQI6lB/96Edjx45dvHjx5s2bv/SlL1111VX566jyXn755c2bN3/00Uc//vGPjx49+mmL5HK5adOmZbPZ2trampqaq6++uqam5p133iks1atXr5TSwoUL+/XrN3HixFP8moD2R2ABHUddXd1tt9122223rVixYvHixS+88EL37t3XrFmTUjrrrLMymcwTTzwxceLE8ePHL1myZOjQoZlMprKy8sR1NmzYsGTJkpKSknvuuaempuaWW2555513evTocc4550ycODGbzf7Zn/3Z0aNH//Zv//aBBx5o9VcJtAM+IgQ6jpdeemnnzp333HNP/uH48eN/9rOf5f+9c+fO//7v/258tunEkYL8R365XK6+vj6l9Nhjj6WU6uvrFy5cuGvXruXLl48aNeqxxx773Oc+d9FFF6WUDhw4kMvlevbseUpfHdCOOIMFdBwbN24sKyurrq6+8sorr7zyyvztEoowYsSIr33ta7lcbubMmZ///Ofnzp27Z8+e8vLyG2644c4770wpHTp06MEHH7zvvvuOHTt288039+nTp0+fPtdff30THzsCnYrAAjqObt26lZaW/q//a+jQoUUvNWfOnNLS0htvvHHgwIFf//rXL7rooj179hSOLlmypLq6esiQIfPmzVu6dOl//dd/vfXWWytXrnzkkUciXgfQ7vmIEOg4zjvvvMOHD48ePXrUqFH5ke3bt/fs2bNHjx4ntU5NTc2iRYtSSldccUV1dfUdd9wxetUuqPYAAAJESURBVPTompqaKVOm5Ce88sorTzzxREpp+fLlf/7nf37hhRemlG644YZXX331rrvuinxJQPvkDBbQcUyaNOnCCy+8+eab33vvvX379s2ZM6d///5r165tPKe0tPSjjz7asWNHLpf7tHWOHj364IMP5nK5ffv2ffTRR4sXLy4pKRk5cmT+aDabnTx5ct++fVNK559//vPPP7937966urolS5acf/75p/QFAu1GDqADee+998aMGZP//tajR49HHnkkP/57v/d7he97Xbp0SSmNGzeuMHLXXXflcrnS0tIFCxbk5+evtcqrrKx8/PHH8+MbNmxIKT311FP5h5988smECRMqKip69Ojx2c9+dt++ffnxxksBnZCPCIEO5Xd+53dWrVr14Ycfbt++fcSIEfkbVqWUXnvttcKcw4cPHzx4MH8K6tM89NBD//iP/3jffff90R/90e/+7u+Wl5fnxxsaGkpKSvKJllLq2bPnsmXLVq1alVIaO3ZsaWnpKXlVQHsjsIAOqKqqqqqq6tOOduvWrfHt3Ztwzjnn5K+vKjjvvPOOu297aWnpZz/72eL2CXRUrsEC+H/uu+++xnfGOu7h/fffP3HixMa3hj9Rc+YAHZ4zWAD/x7x587LZ7Kc9TClNmDDhzDPPrK6uvuSSSz5tkebMATq8TO7Tf48GAIAi+IgQACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACPa/AeEEHf37lHZpAAAAAElFTkSuQmCC"/>
+
+<!-- PlutoStaticHTML.End --></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../plasticity/">« Plasticity</a><a class="docs-footer-nextpage" href="../viscoplasticity/">Viscoplasticity »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Monday 3 July 2023 08:01">Monday 3 July 2023</span>. Using Julia version 1.9.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

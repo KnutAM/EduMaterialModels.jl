@@ -1,4 +1,4 @@
-  Activating new project at `/tmp/jl_sYxdAN`
+  Activating new project at `/tmp/jl_NfaIdB`
      Cloning git-repo `https://github.com/KnutAM/Newton.jl.git`
     Updating git-repo `https://github.com/KnutAM/Newton.jl.git`
      Cloning git-repo `https://github.com/KnutAM/MaterialModelsBase.jl.git`
@@ -7,136 +7,136 @@
     Updating git-repo `https://github.com/KnutAM/EduMaterialModels.jl`
     Updating registry at `~/.julia/registries/General.toml`
    Resolving package versions...
-   Installed Calculus ──────────────── v0.5.1
+   Installed libfdk_aac_jll ────────── v2.0.2+0
    Installed x265_jll ──────────────── v3.5.0+0
    Installed JpegTurbo_jll ─────────── v2.1.91+0
-   Installed libfdk_aac_jll ────────── v2.0.2+0
-   Installed ImageIO ───────────────── v0.6.6
-   Installed JpegTurbo ─────────────── v0.1.2
+   Installed Calculus ──────────────── v0.5.1
    Installed TiffImages ────────────── v0.6.4
-   Installed HypergeometricFunctions ─ v0.3.17
+   Installed ImageIO ───────────────── v0.6.6
    Installed AxisArrays ────────────── v0.4.6
-   Installed PNGFiles ──────────────── v0.3.17
+   Installed JpegTurbo ─────────────── v0.1.2
+   Installed HypergeometricFunctions ─ v0.3.17
    Installed Opus_jll ──────────────── v1.3.2+0
    Installed FFTW ──────────────────── v1.7.1
    Installed StatsFuns ─────────────── v1.3.0
+   Installed PNGFiles ──────────────── v0.3.17
    Installed StableHashTraits ──────── v0.3.1
    Installed Hyperscript ───────────── v0.0.4
    Installed Sixel ─────────────────── v0.1.2
-   Installed PDMats ────────────────── v0.11.17
    Installed EarCut_jll ────────────── v2.2.4+0
-   Installed Grisu ─────────────────── v1.0.2
+   Installed PDMats ────────────────── v0.11.17
    Installed ProgressMeter ─────────── v1.7.2
    Installed Contour ───────────────── v0.6.2
    Installed OpenEXR ───────────────── v0.3.2
+   Installed Grisu ─────────────────── v1.0.2
    Installed Qhull_jll ─────────────── v8.0.1003+0
-   Installed PlotUtils ─────────────── v1.3.5
    Installed MiniQhull ─────────────── v0.4.0
+   Installed PlotUtils ─────────────── v1.3.5
    Installed FileIO ────────────────── v1.16.1
-   Installed PlutoUI ───────────────── v0.7.51
    Installed IntelOpenMP_jll ───────── v2023.1.0+0
-   Installed Netpbm ────────────────── v1.1.0
    Installed SignedDistanceFields ──── v0.4.0
+   Installed Netpbm ────────────────── v1.1.0
    Installed QhullMiniWrapper_jll ──── v1.0.0+1
    Installed TupleTools ────────────── v1.3.0
-   Installed Missings ──────────────── v1.1.0
+   Installed PlutoUI ───────────────── v0.7.51
    Installed FFMPEG ────────────────── v0.4.1
+   Installed Missings ──────────────── v1.1.0
    Installed TriplotBase ───────────── v0.1.0
-   Installed CEnum ─────────────────── v0.4.2
    Installed Showoff ───────────────── v1.0.3
    Installed ScanByte ──────────────── v0.4.0
-   Installed Pango_jll ─────────────── v1.50.9+0
    Installed PolygonOps ────────────── v0.1.2
-   Installed PkgVersion ────────────── v0.3.2
-   Installed QOI ───────────────────── v1.0.0
+   Installed Pango_jll ─────────────── v1.50.9+0
    Installed isoband_jll ───────────── v0.2.3+0
-   Installed UnicodeFun ────────────── v0.4.1
+   Installed QOI ───────────────────── v1.0.0
+   Installed CEnum ─────────────────── v0.4.2
    Installed FriBidi_jll ───────────── v1.0.10+0
+   Installed PkgVersion ────────────── v0.3.2
+   Installed UnicodeFun ────────────── v0.4.1
+   Installed ImageMetadata ─────────── v0.9.8
    Installed Graphics ──────────────── v1.1.2
    Installed Rmath_jll ─────────────── v0.4.0+0
-   Installed ColorSchemes ──────────── v3.21.0
-   Installed ImageMetadata ─────────── v0.9.8
-   Installed Ratios ────────────────── v0.4.5
    Installed x264_jll ──────────────── v2021.5.5+0
+   Installed Ratios ────────────────── v0.4.5
+   Installed FreeType ──────────────── v4.0.0
+   Installed ColorSchemes ──────────── v3.21.0
+   Installed DataStructures ────────── v0.18.14
+   Installed Colors ────────────────── v0.12.10
    Installed MathTeXEngine ─────────── v0.5.6
    Installed MappedArrays ──────────── v0.4.2
    Installed PaddedViews ───────────── v0.5.12
-   Installed FreeType ──────────────── v4.0.0
-   Installed DataStructures ────────── v0.18.14
-   Installed Colors ────────────────── v0.12.10
    Installed StatsAPI ──────────────── v1.6.0
-   Installed libaom_jll ────────────── v3.4.0+0
    Installed LazyModules ───────────── v0.3.1
-   Installed MosaicViews ───────────── v0.3.4
    Installed GridLayoutBase ────────── v0.9.1
-   Installed StatsBase ─────────────── v0.34.0
    Installed Automa ────────────────── v0.8.3
+   Installed MosaicViews ───────────── v0.3.4
+   Installed libaom_jll ────────────── v3.4.0+0
+   Installed StatsBase ─────────────── v0.34.0
+   Installed ColorTypes ────────────── v0.11.4
+   Installed Match ─────────────────── v1.2.0
+   Installed Isoband ───────────────── v0.1.1
+   Installed Inflate ───────────────── v0.1.3
    Installed ImageCore ─────────────── v0.9.4
    Installed TensorCore ────────────── v0.1.1
-   Installed Match ─────────────────── v1.2.0
-   Installed ColorTypes ────────────── v0.11.4
-   Installed Isoband ───────────────── v0.1.1
    Installed FreeTypeAbstraction ───── v0.10.0
-   Installed MKL_jll ───────────────── v2023.1.0+0
-   Installed Inflate ───────────────── v0.1.3
    Installed Imath_jll ─────────────── v3.1.7+0
+   Installed MKL_jll ───────────────── v2023.1.0+0
    Installed Setfield ──────────────── v1.1.1
    Installed Extents ───────────────── v0.1.1
+   Installed Packing ───────────────── v0.5.0
    Installed AbstractFFTs ──────────── v1.3.2
    Installed ColorVectorSpace ──────── v0.9.10
    Installed ConstructionBase ──────── v1.5.2
-   Installed Packing ───────────────── v0.5.0
-   Installed Ogg_jll ───────────────── v1.3.5+1
    Installed ChainRulesCore ────────── v1.16.0
+   Installed Ogg_jll ───────────────── v1.3.5+1
    Installed Animations ────────────── v0.4.1
    Installed KernelDensity ─────────── v0.6.7
-   Installed StackViews ────────────── v0.1.1
    Installed Reexport ──────────────── v1.2.2
    Installed RangeArrays ───────────── v0.3.2
+   Installed StackViews ────────────── v0.1.1
    Installed FFTW_jll ──────────────── v3.3.10+0
-   Installed OpenEXR_jll ───────────── v3.1.4+0
    Installed SimpleTraits ──────────── v0.9.4
    Installed GPUArraysCore ─────────── v0.1.5
    Installed ColorBrewer ───────────── v0.4.0
    Installed AbstractPlutoDingetjes ── v1.1.4
+   Installed OpenEXR_jll ───────────── v3.1.4+0
    Installed libass_jll ────────────── v0.15.1+0
    Installed Rmath ─────────────────── v0.7.1
    Installed DualNumbers ───────────── v0.6.8
-   Installed ImageBase ─────────────── v0.1.5
    Installed IntervalSets ──────────── v0.7.4
+   Installed ImageBase ─────────────── v0.1.5
    Installed Cairo ─────────────────── v1.0.5
+   Installed IterTools ─────────────── v1.8.0
    Installed FFMPEG_jll ────────────── v4.4.2+2
    Installed IndirectArrays ────────── v1.0.0
-   Installed IterTools ─────────────── v1.8.0
-   Installed GeometryBasics ────────── v0.4.7
    Installed MakieCore ─────────────── v0.6.3
    Installed CairoMakie ────────────── v0.10.6
+   Installed GeometryBasics ────────── v0.4.7
    Installed LAME_jll ──────────────── v3.100.1+0
    Installed FixedPointNumbers ─────── v0.8.4
    Installed StructArrays ──────────── v0.6.15
-   Installed LaTeXStrings ──────────── v1.3.0
+   Installed Formatting ────────────── v0.4.2
    Installed libvorbis_jll ─────────── v1.3.7+1
    Installed libsixel_jll ──────────── v1.10.3+0
-   Installed FillArrays ────────────── v1.2.1
-   Installed Formatting ────────────── v0.4.2
-   Installed QuadGK ────────────────── v2.8.2
+   Installed LaTeXStrings ──────────── v1.3.0
    Installed Interpolations ────────── v0.14.7
+   Installed QuadGK ────────────────── v2.8.2
+   Installed FillArrays ────────────── v1.2.1
    Installed AxisAlgorithms ────────── v1.0.1
    Installed ImageAxes ─────────────── v0.6.10
+   Installed Observables ───────────── v0.5.4
    Installed SortingAlgorithms ─────── v1.1.1
    Installed WoodburyMatrices ──────── v0.5.5
-   Installed Observables ───────────── v0.5.4
-   Installed GeoInterface ──────────── v1.3.1
    Installed Distributions ─────────── v0.25.98
+   Installed GeoInterface ──────────── v1.3.1
    Installed Makie ─────────────────── v0.19.6
-    Updating `/tmp/jl_sYxdAN/Project.toml`
+    Updating `/tmp/jl_NfaIdB/Project.toml`
   [13f3f980] + CairoMakie v0.10.6
   [dc10c695] + EduMaterialModels v0.1.0 `https://github.com/KnutAM/EduMaterialModels.jl#main`
   [af893363] + MaterialModelsBase v0.1.3 `https://github.com/KnutAM/MaterialModelsBase.jl.git#main`
   [83aa5b51] + Newton v0.1.3 `https://github.com/KnutAM/Newton.jl.git#main`
   [7f904dfe] + PlutoUI v0.7.51
   [48a634ad] + Tensors v1.14.0
-    Updating `/tmp/jl_sYxdAN/Manifest.toml`
+    Updating `/tmp/jl_NfaIdB/Manifest.toml`
   [621f4979] + AbstractFFTs v1.3.2
   [6e696c72] + AbstractPlutoDingetjes v1.1.4
   [1520ce14] + AbstractTrees v0.4.4
@@ -430,8 +430,8 @@ Precompiling project...
 [32m  ✓ [39m[90mExtents[39m
 [32m  ✓ [39m[90mLazyModules[39m
 [32m  ✓ [39m[90mRatios[39m
-[32m  ✓ [39m[90mUnicodeFun[39m
 [32m  ✓ [39m[90mChainRulesCore[39m
+[32m  ✓ [39m[90mUnicodeFun[39m
 [32m  ✓ [39m[90mInflate[39m
 [32m  ✓ [39m[90mConstructionBase[39m
 [32m  ✓ [39m[90mAbstractPlutoDingetjes[39m
@@ -444,8 +444,8 @@ Precompiling project...
 [32m  ✓ [39m[90mFillArrays[39m
 [32m  ✓ [39m[90mDataStructures[39m
 [32m  ✓ [39m[90mFixedPointNumbers[39m
-[32m  ✓ [39m[90mFileIO[39m
 [32m  ✓ [39m[90mRmath_jll[39m
+[32m  ✓ [39m[90mFileIO[39m
 [32m  ✓ [39m[90mQhull_jll[39m
 [32m  ✓ [39m[90mlibfdk_aac_jll[39m
 [32m  ✓ [39m[90mImath_jll[39m
@@ -475,8 +475,8 @@ Precompiling project...
 [32m  ✓ [39m[90mConstructionBase → ConstructionBaseIntervalSetsExt[39m
 [32m  ✓ [39m[90mLogExpFunctions → LogExpFunctionsChainRulesCoreExt[39m
 [32m  ✓ [39m[90mStableHashTraits[39m
-[32m  ✓ [39m[90mConstructionBase → ConstructionBaseStaticArraysExt[39m
 [32m  ✓ [39m[90mSortingAlgorithms[39m
+[32m  ✓ [39m[90mConstructionBase → ConstructionBaseStaticArraysExt[39m
 [32m  ✓ [39m[90mRatios → RatiosFixedPointNumbersExt[39m
 [32m  ✓ [39m[90mQuadGK[39m
 [32m  ✓ [39m[90mQhullMiniWrapper_jll[39m
@@ -493,11 +493,11 @@ Precompiling project...
 [32m  ✓ [39m[90mStructArrays[39m
 [32m  ✓ [39m[90mMosaicViews[39m
 [32m  ✓ [39m[90mAutoma[39m
-[32m  ✓ [39m[90mSetfield[39m
 [32m  ✓ [39m[90mInterpolations[39m
-[32m  ✓ [39m[90mMiniQhull[39m
-[32m  ✓ [39m[90mSpecialFunctions[39m
 [32m  ✓ [39m[90mStatsBase[39m
+[32m  ✓ [39m[90mSpecialFunctions[39m
+[32m  ✓ [39m[90mSetfield[39m
+[32m  ✓ [39m[90mMiniQhull[39m
 [32m  ✓ [39mPlutoUI
 [32m  ✓ [39m[90mColors[39m
 [32m  ✓ [39m[90mQOI[39m
@@ -541,11 +541,11 @@ Precompiling project...
 [32m  ✓ [39m[90mDistributions[39m
 [32m  ✓ [39m[90mImageBase[39m
 [32m  ✓ [39m[90mJpegTurbo[39m
-[32m  ✓ [39m[90mSixel[39m
 [32m  ✓ [39m[90mPNGFiles[39m
+[32m  ✓ [39m[90mSixel[39m
 [32m  ✓ [39m[90mDistributions → DistributionsChainRulesCoreExt[39m
-[32m  ✓ [39m[90mImageAxes[39m
 [32m  ✓ [39m[90mKernelDensity[39m
+[32m  ✓ [39m[90mImageAxes[39m
 [32m  ✓ [39m[90mImageMetadata[39m
 [32m  ✓ [39m[90mNetpbm[39m
 [32m  ✓ [39m[90mImageIO[39m
@@ -558,4 +558,4 @@ Precompiling project...
 [32m  ✓ [39mEduMaterialModels
 [32m  ✓ [39m[90mMakie[39m
 [32m  ✓ [39mCairoMakie
-  153 dependencies successfully precompiled in 534 seconds. 91 already precompiled.
+  153 dependencies successfully precompiled in 874 seconds. 91 already precompiled.
