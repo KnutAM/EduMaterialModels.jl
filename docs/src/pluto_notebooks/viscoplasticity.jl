@@ -28,7 +28,7 @@ begin
 		Pkg.PackageSpec(;name="Tensors"),
 		Pkg.PackageSpec(;url="https://github.com/KnutAM/Newton.jl.git"),
 		Pkg.PackageSpec(;url="https://github.com/KnutAM/MaterialModelsBase.jl.git"),
-		Pkg.PackageSpec(;url="https://github.com/KnutAM/EduMaterialModels.jl", rev="main"),
+		Pkg.PackageSpec(;url="https://github.com/KnutAM/EduMaterialModels.jl.git"),
 	])
 	using PlutoUI, Tensors, MaterialModelsBase, EduMaterialModels
 	import CairoMakie as CM
