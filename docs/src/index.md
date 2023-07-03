@@ -11,6 +11,6 @@ and other [utility functions](@ref Utility-functions) for running simulations.
 However, the main purpose is to demonstrate the different material behaviors using 
 [`Pluto`](https://plutojl.org/) notebooks:
 
-* [Plasticity](Notebooks/plasticity)
-* [Viscoplasticity](Notebooks/viscoplasticity)
-* [Viscoelasticity](Notebooks/viscoelasticity)
+* [Plasticity](pluto_notebooks/plasticity_md/)
+* [Viscoplasticity](pluto_notebooks/viscoplasticity_md)
+* [Viscoelasticity](pluto_notebooks/viscoelasticity_md)
