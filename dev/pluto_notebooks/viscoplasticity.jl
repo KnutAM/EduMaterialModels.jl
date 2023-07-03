@@ -28,7 +28,7 @@ begin
 		Pkg.PackageSpec(;name="Tensors"),
 		Pkg.PackageSpec(;url="https://github.com/KnutAM/Newton.jl.git"),
 		Pkg.PackageSpec(;url="https://github.com/KnutAM/MaterialModelsBase.jl.git"),
-		Pkg.PackageSpec(;url="https://github.com/KnutAM/EduMaterialModels.jl", rev="main"),
+		Pkg.PackageSpec(;url="https://github.com/KnutAM/EduMaterialModels.jl.git"),
 	])
 	using PlutoUI, Tensors, MaterialModelsBase, EduMaterialModels
 	import CairoMakie as CM
@@ -120,6 +120,6 @@ plot_response(;E=E*1e3, Y0=Y0, Hiso=1e3*Hiso, κ∞=κ∞, Hkin=1e3*Hkin, β∞=
 # ╔═╡ Cell order:
 # ╟─4b6d68c1-2b9f-45fc-bfda-a525cdf8679f
 # ╟─48db4cd0-15f0-11ee-0796-d3fffb0d18a2
-# ╠═2a7ab774-12b0-4a75-8266-891d8411c1f2
+# ╟─2a7ab774-12b0-4a75-8266-891d8411c1f2
 # ╟─7dc5f83b-7a07-4741-9a2e-42e9246a8999
 # ╟─c5d0dd04-241e-48a8-944d-dfa61edeface
