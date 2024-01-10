@@ -74,7 +74,7 @@ begin
 	2. How do the time discretization and time integration affect the material response, i.e. the number of time steps and explicit versus implicit algorithms. 
 
 	## Model theory
-	The plasticity model investigated in this notebook assumes linear elasticity via the additive decomposition, ``\boldsymbol{\epsilon} = \boldsymbol{\epsilon}_\mathrm{p} + \boldsymbol{\epsilon}_\mathrm{e}``, where the elastic strains, ``\boldsymbol{\epsilon}_\mathrm{e}`` are giving the stress.
+	The plasticity model investigated in this notebook assumes linear elasticity via the additive decomposition, ``\boldsymbol{\epsilon} = \boldsymbol{\epsilon}_\mathrm{p} + \boldsymbol{\epsilon}_\mathrm{e}``, where the elastic strains, ``\boldsymbol{\epsilon}_\mathrm{e}`` are giving the stress, 
 	
 	``
 	\boldsymbol{\sigma} = \mathsf{E}:[\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\mathrm{p}], \quad \mathsf{E}=2G \mathsf{I}^\mathrm{dev} + 3K \boldsymbol{I}\otimes\boldsymbol{I}
@@ -134,7 +134,7 @@ end
 plot_response(;E=E*1e3, Y0=Y0, Hiso=1e3*Hiso, κ∞=κ∞, Hkin=1e3*Hkin, β∞=β∞, num_steps=num_steps, use_explicit=method)
 
 # ╔═╡ Cell order:
-# ╠═48db4cd0-15f0-11ee-0796-d3fffb0d18a2
-# ╠═2a7ab774-12b0-4a75-8266-891d8411c1f2
+# ╟─48db4cd0-15f0-11ee-0796-d3fffb0d18a2
+# ╟─2a7ab774-12b0-4a75-8266-891d8411c1f2
 # ╟─7dc5f83b-7a07-4741-9a2e-42e9246a8999
 # ╟─c5d0dd04-241e-48a8-944d-dfa61edeface
