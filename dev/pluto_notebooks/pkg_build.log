@@ -1,16 +1,17 @@
-  Activating new project at `/tmp/jl_02nCPA`
+  Activating new project at `/tmp/jl_gd1KiW`
     Updating git-repo `https://github.com/KnutAM/Newton.jl.git`
     Updating git-repo `https://github.com/KnutAM/MaterialModelsBase.jl.git`
     Updating git-repo `https://github.com/KnutAM/EduMaterialModels.jl.git`
+    Updating registry at `~/.julia/registries/General.toml`
    Resolving package versions...
-    Updating `/tmp/jl_02nCPA/Project.toml`
+    Updating `/tmp/jl_gd1KiW/Project.toml`
   [13f3f980] + CairoMakie v0.11.5
   [dc10c695] + EduMaterialModels v0.1.0 `https://github.com/KnutAM/EduMaterialModels.jl.git#main`
   [af893363] + MaterialModelsBase v0.2.1 `https://github.com/KnutAM/MaterialModelsBase.jl.git#main`
   [83aa5b51] + Newton v0.1.7 `https://github.com/KnutAM/Newton.jl.git#main`
   [7f904dfe] + PlutoUI v0.7.54
   [48a634ad] + Tensors v1.16.1
-    Updating `/tmp/jl_02nCPA/Manifest.toml`
+    Updating `/tmp/jl_gd1KiW/Manifest.toml`
   [621f4979] + AbstractFFTs v1.5.0
   [398f06c4] + AbstractLattices v0.3.0
   [6e696c72] + AbstractPlutoDingetjes v1.2.3
