@@ -4,7 +4,7 @@ struct ExplicitPlasticity{M<:J2Plasticity} <: AbstractMaterial
 end
 MMB.initial_material_state(m::ExplicitPlasticity) = MMB.initial_material_state(m.m)
 
-function MMB.material_response(mw::ExplicitPlasticity, ϵ, old, Δt=nothing, cache=get_cache(mw), extras=NoExtraOutput(); options=Dict())
+function MMB.material_response(mw::ExplicitPlasticity, ϵ, old, args...)
     dσdϵ = gradient(e -> explicit_response(Val(false), mw.m, e, old), ϵ)
     σ, new = explicit_response(Val(true), mw.m, ϵ, old)
     return σ, dσdϵ, new

@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.26
+# v0.19.36
 
 using Markdown
 using InteractiveUtils
@@ -50,7 +50,7 @@ function plot_response(;Δϵ=0.01, num_steps=100, E=200.e3, Y0=200.0, Hiso=10e3,
 	stress_state = UniaxialStress()
 	σ = EduMaterialModels.simulate_response(mw, stress_state, ϵ, range(0,1,length(ϵ)))
 	fig = CM.Figure()
-	ax = CM.Axis(fig[1,1]; xlabel="ϵ₁₁ [%]", ylabel="σ₁₁ [MPa]")
+	ax = CM.Axis(fig[1,1]; xlabel="ϵ₁₁ [%]", ylabel="σ₁₁ [MPa]", xticks=-1:0.1:1, yticks=-1000:100:1000)
 	CM.lines!(ax, 100*first.(ϵ), first.(σ))
 	CM.xlims!(ax, -100*Δϵ, 100*Δϵ)
 	CM.ylims!(ax, -1000, 1000)
@@ -134,7 +134,7 @@ end
 plot_response(;E=E*1e3, Y0=Y0, Hiso=1e3*Hiso, κ∞=κ∞, Hkin=1e3*Hkin, β∞=β∞, num_steps=num_steps, use_explicit=method)
 
 # ╔═╡ Cell order:
-# ╟─48db4cd0-15f0-11ee-0796-d3fffb0d18a2
-# ╟─2a7ab774-12b0-4a75-8266-891d8411c1f2
+# ╠═48db4cd0-15f0-11ee-0796-d3fffb0d18a2
+# ╠═2a7ab774-12b0-4a75-8266-891d8411c1f2
 # ╟─7dc5f83b-7a07-4741-9a2e-42e9246a8999
 # ╟─c5d0dd04-241e-48a8-944d-dfa61edeface

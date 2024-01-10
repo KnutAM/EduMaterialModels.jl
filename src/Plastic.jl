@@ -49,7 +49,7 @@ function process_solution(m::AbstractPlastic, ϵ, old::PlasticState, Δt, x, drd
     return σ, dσdϵ, PlasticState(ϵp, β, κ)
 end
 
-function MMB.material_response(m::AbstractPlastic, ϵ, old::PlasticState, Δt=nothing, cache=get_cache(m), extras=NoExtraOutput(); options=Dict())
+function MMB.material_response(m::AbstractPlastic, ϵ, old::PlasticState, Δt, args...)
     ϵe_trial = ϵ - old.ϵp
     σ_trial = elastic_stress(m, ϵe_trial)
     Y0 = initial_yield_limit(m)

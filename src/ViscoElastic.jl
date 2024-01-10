@@ -25,7 +25,7 @@ function calculate_stress(m::Zener1D, ϵt::SymmetricTensor{2,1}, old::Zener1DSta
     return SymmetricTensor{2,1}((σ,))
 end
 
-function MaterialModelsBase.material_response(::UniaxialStress, m::Zener1D, ϵ, old::Zener1DState, Δt, args...; kwargs...)
+function MaterialModelsBase.material_response(::UniaxialStress, m::Zener1D, ϵ, old::Zener1DState, Δt, args...)
     dσdϵ, σ = gradient(ϵt -> calculate_stress(m, ϵt, old, Δt), ϵ, :all)
     new_state = Zener1DState(viscous_strain(m, first(ϵ), old, Δt))
     return σ, dσdϵ, new_state
